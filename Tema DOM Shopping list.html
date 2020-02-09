@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        .crossWord{
+            text-decoration-line: line-through;
+        }
+
+        #mov{
+            background-color:rgba(161, 139, 211, 0.486);      
+        }
+
+        .format{
+            
+            padding:50px;
+            border: 1px solid;
+            border-radius: 25px;
+            margin-top:30px;
+            margin-left:200px;
+            margin-right: 200px;
+            background-color: white; 
+            text-align: center;        
+        }
+        .center{
+            margin-left:auto; 
+            margin-right:auto;
+        }
+
+
+    </style>
+
+    <script>
+        var list=[
+            {
+                item:"salata",        
+            },
+            {
+                item:"afine",        
+            },
+            {
+                item:"migdale",
+            },
+            {
+                item:"ciocolata",
+            },
+            {
+                item:"andive",
+            }
+
+        ]
+        var indexEdit;
+        function draw(){
+            var str = "";
+            for(var i=0;i<list.length;i++){
+                str+= `
+                    <tr>
+                        <td class="main">${list[i].item}</td>							
+                        <td><input type=button value="Mark as bought" onclick="markBought(${i});"> 
+                        </td>                                                  			
+                    </tr>
+                `
+                }
+            document.querySelector("table tbody").innerHTML = str;
+        }
+
+        function add(event){              
+            event.preventDefault();                
+            var x=document.querySelector("[name='item']").value;                
+            var newLink = {
+                item:document.querySelector("[name='item']").value,					
+                };
+            if (x.length!==0){
+                if(indexEdit===undefined){					
+                    list.push(newLink);
+                }else{					
+                    list[indexEdit]=newLink;
+                    }				
+                draw();
+                }  else{
+                alert("Adaugati un produs!");
+                }  
+            document.querySelector("[name='item']").value=null;  
+            draw();                      
+        }
+        function addEnter(event){
+            var x=event.keyCode;
+            if (x==13){
+                add(event);        
+            }
+        }
+
+        function markBought(idx){          
+            document.querySelectorAll('td.main')[idx].classList.toggle("crossWord");            
+            
+        }
+     
+
+
+        function sortAsc(){
+            list.sort(function(a,b){
+                if(a.item>b.item){
+                    return 1;
+                }else if(a.item<b.item){
+                    return -1;
+                }else{
+                    return 0;
+                    }        
+                });  
+                draw();   
+        }
+
+        function sortDesc(){     
+            list.sort(function(a,b){
+                if(a.item<b.item){
+                    return 1;
+                }else if(a.item>b.item){
+                    return -1;
+                }else{
+                    return 0;
+                }       
+            });
+            draw(); 
+        }
+     </script>
+
+</head>
+<body id="mov" onload="draw();">
+    <div class="format" >
+        <p><span style="font-weight: bold;font-size: 30px;"> SHOPPING LIST</span></p> <br>
+        <input type="text" name="item" onkeypress="addEnter(event)" > <button type="button" onclick="add(event);"><strong>Add item</strong></button>
+        <br>
+        <div>
+            <p>
+                <button type="button" onclick="sortAsc();"><strong>Sort ascending</strong></button>
+                <button type="button" onclick="sortDesc();"><strong>Sort descending</strong></button>
+            </p>
+            <table class="center">
+                <thead>
+                    <tr>
+                        <th>Item description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>                        
+                </tbody>
+            </table>        
+        </div>
+    </div>
+</body>
+</html>
